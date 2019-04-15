@@ -1,14 +1,38 @@
 {% extends 'base.html' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %} Record Keeper {% endblock %}
+
+{% block script %}
+{% endblock %}
 
 {% block sidebar %}
-  Hi {{ request.user }}
-  <hr/>
+  {% url 'user-dashboard' as user_dashboard_url %}
+  {% url 'user-dashboard' as user_dashboard_url %}
+  {% url 'user-dashboard' as user_dashboard_url %}
 
-  <a href="{% url 'user-profile' %}">Profile</a>
-  -
-  <a href="{% url 'user-records' %}">Records</a>
-  -
-  <a href="{% url 'user-reports' %}">Reports</a>
+  <div class="text-center">
+    <img class="img-circle" src="{{ profile.avatar.url }}"
+      width="70" height="70">
+    <br/>
+    <br/>
+    <h4>Hi, {{ request.user.get_full_name }}</h4>
+  </div>
+
+  <div class="list-group">
+    <span class="text-uppercase">Dashboard</span>
+    <a href="{% url 'user-dashboard' %}"
+      class="list-group-item {% if request.path == user_dashboard_url %} active {% endif %}">
+      Profile
+      <span class="badge"></span>
+    </a>
+    <a href="{% url 'user-dashboard' %}"
+      class="list-group-item {% if request.path == user_dashboard_url %} active {% endif %}">Records</a>
+    <a href="{% url 'user-dashboard' %}"
+      class="list-group-item {% if request.path == user_dashboard_url %} active {% endif %}">Reports</a>
+  </div>
+
+  <div class="text-center">
+    <a href="{% url 'user-sign-out' %}?next={{ request.path }}"
+      class="btn btn-pink">Logout</a>
+  </div>
 {% endblock %}

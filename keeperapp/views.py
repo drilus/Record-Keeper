@@ -3,14 +3,15 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from keeperapp.forms import UserForm, ProfileForm
+from keeperapp.models import Profile
 
 # Create your views here.
 def home(request):
-    return redirect(user_home)
+    return redirect(user_main)
 
 @login_required(login_url='/user/sign-in')
 def user_home(request):
-    return render(request, 'user/home.html', {})
+    return render(request, 'user/dashboard.html', {})
 
 def user_sign_up(request):
     user_form = UserForm()
@@ -36,4 +37,11 @@ def user_sign_up(request):
     return render(request, 'user/sign_up.html', {
         "user_form": user_form,
         "profile_form": profile_form
+    })
+
+@login_required(login_url='/user/sign-in')
+def user_dashboard(request):
+    profile = Profile.objects.get(user__username=request.user.username)
+    return render(request, 'user/dashboard.html', {
+        "profile": profile
     })
