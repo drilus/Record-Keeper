@@ -6,29 +6,28 @@
 {% endblock %}
 
 {% block sidebar %}
-  {% url 'user-dashboard' as user_dashboard_url %}
-  {% url 'user-dashboard' as user_dashboard_url %}
-  {% url 'user-dashboard' as user_dashboard_url %}
+  {% url 'user-overview' as user_overview_url %}
+  {% url 'user-settings' as user_settings_url %}
+  {% url 'user-categories' as user_categories_url %}
+  {% url 'user-records' as user_records_url %}
 
   <div class="text-center">
-    <img class="img-circle" src="{{ profile.avatar.url }}"
+    <img class="img-circle" src="{{ avatar_url }}"
       width="70" height="70">
     <br/>
     <br/>
-    <h4>Hi, {{ request.user.get_full_name }}</h4>
+    <h4>{{ request.user.get_full_name }}</h4>
   </div>
 
   <div class="list-group">
-    <span class="text-uppercase">Dashboard</span>
-    <a href="{% url 'user-dashboard' %}"
-      class="list-group-item {% if request.path == user_dashboard_url %} active {% endif %}">
-      Profile
-      <span class="badge"></span>
-    </a>
-    <a href="{% url 'user-dashboard' %}"
-      class="list-group-item {% if request.path == user_dashboard_url %} active {% endif %}">Records</a>
-    <a href="{% url 'user-dashboard' %}"
-      class="list-group-item {% if request.path == user_dashboard_url %} active {% endif %}">Reports</a>
+    <a href="{% url 'user-overview' %}"
+      class="list-group-item {% if request.path == user_overview_url %} active {% endif %}">Overview</a>
+    <a href="{% url 'user-settings' %}"
+      class="list-group-item {% if request.path == user_settings_url %} active {% endif %}">Settings</a>
+    <a href="{% url 'user-categories' %}"
+      class="list-group-item {% if request.path == user_categories_url %} active {% endif %}">Categories</a>
+    <a href="{% url 'user-records' %}"
+      class="list-group-item {% if request.path == user_records_url %} active {% endif %}">Records</a>
   </div>
 
   <div class="text-center">
