@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from jsonfield import JSONField
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -18,8 +20,8 @@ class Profile(models.Model):
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
-    columns = models.JSONField(max_length=2000)
-    options = models.JSONField(max_length=2000)
+    columns = JSONField(max_length=2000)
+    options = JSONField(max_length=2000)
 
     def __str__(self):
         return self.category
@@ -28,7 +30,7 @@ class Category(models.Model):
 class CategoryData(models.Model):
     user = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
-    description = models.JSONField(max_length=2000)
+    description = JSONField(max_length=2000)
     image = models.ImageField(upload_to='images/', blank=True)
     file = models.FileField(upload_to='files/', blank=True)
 

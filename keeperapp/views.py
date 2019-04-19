@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from keeperapp.forms import UserForm, ProfileForm
+from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
+
+from keeperapp.forms import ProfileForm, UserForm
 from keeperapp.models import Profile
 
 

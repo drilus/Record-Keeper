@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from keeperapp.models import Profile, Category, CategoryData
 
 # Register your models here.
