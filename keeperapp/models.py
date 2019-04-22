@@ -18,21 +18,54 @@ class Profile(models.Model):
 
 
 class Category(models.Model):
+    class Meta:
+        verbose_name_plural = 'categories'
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
     columns = JSONField(max_length=2000)
     options = JSONField(max_length=2000)
 
     def __str__(self):
-        return self.category
+        return self.id
 
 
 class CategoryData(models.Model):
-    user = models.ForeignKey(Category, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name_plural = 'CategoryData'
+
+    category = models.OneToOneField(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='category_data',
+        default='unknown'
+    )
     name = models.CharField(max_length=500)
     description = JSONField(max_length=2000)
     image = models.ImageField(upload_to='images/', blank=True)
     file = models.FileField(upload_to='files/', blank=True)
 
     def __str__(self):
-        return self.name
+        return self.id
+
+
+class Option(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_options')
+    view = models.CharField(max_length=500)
+    theme = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.user.username
+
+
+class Record(models.Model):
+    user = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='record_user')
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='record_category'
+    )
+    data = JSONField(max_length=2000)
+    receipt = models.ImageField(upload_to='receipts/', blank=True)
+    file = models.FileField(upload_to='files/', blank=True)

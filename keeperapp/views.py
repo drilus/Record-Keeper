@@ -49,14 +49,14 @@ def user_overview(request):
 
 @login_required(login_url='/user/sign-in')
 def user_settings(request):
-    return render(request, 'user/settings.html')
+    return render(request, 'user/settings.html', {})
 
 
 @login_required(login_url='/user/sign-in')
 def user_categories(request):
-    return render(request, 'user/categories.html')
+    return render(request, 'user/categories.html', {})
 
 
 @login_required(login_url='/user/sign-in')
 def user_records(request):
-    return render(request, 'user/records.html')
+    return render(request, 'user/records.html', {})
