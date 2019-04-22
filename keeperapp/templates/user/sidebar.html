@@ -12,7 +12,7 @@
   {% url 'user-records' as user_records_url %}
 
   <div class="text-center">
-    <img class="img-circle" src="{{ avatar_url }}"
+    <img class="img-circle" src="{{ MEDIA_URL }}{{ request.user.profile.avatar }}"
       width="70" height="70">
     <br/>
     <br/>

@@ -4,11 +4,10 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
 from keeperapp.forms import ProfileForm, UserForm
-from keeperapp.models import Profile
 
 
 def home(request):
-    return redirect(user_main)  # noqa: F821
+    return redirect(user_home)  # noqa: F821
 
 
 @login_required(login_url='/user/sign-in')
@@ -45,7 +44,19 @@ def user_sign_up(request):
 
 @login_required(login_url='/user/sign-in')
 def user_overview(request):
-    avatar_url = Profile.objects.get(user__username=request.user.username).avatar.url
-    return render(request, 'user/overview.html', {
-        'avatar_url': avatar_url
-    })
+    return render(request, 'user/overview.html', {})
+
+
+@login_required(login_url='/user/sign-in')
+def user_settings(request):
+    return render(request, 'user/settings.html')
+
+
+@login_required(login_url='/user/sign-in')
+def user_categories(request):
+    return render(request, 'user/categories.html')
+
+
+@login_required(login_url='/user/sign-in')
+def user_records(request):
+    return render(request, 'user/records.html')

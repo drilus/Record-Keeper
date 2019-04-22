@@ -16,4 +16,7 @@ urlpatterns = [
          name='user-sign-out'),
     path('user/sign-up', views.user_sign_up, name='user-sign-up'),
     path('user/overview', views.user_overview, name='user-overview'),
+    path('user/settings', views.user_settings, name='user-settings'),
+    path('user/categories', views.user_categories, name='user-categories'),
+    path('user/records', views.user_records, name='user-records'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
