@@ -6,7 +6,7 @@
   <div class="panel">
     <div class="panel-heading bg-blue">
       <h4 class="panel-title text-center text-white">
-        Settings
+        Profile Settings
       </h4>
     </div>
     <div class="panel-body">
@@ -14,7 +14,7 @@
         {% csrf_token %}
         {% bootstrap_form user_form %}
         {% bootstrap_form profile_form %}
-        <button type="submit" class="btn btn-pink">Update</button>
+        <button type="submit" class="btn btn-pink pull-right">Update</button>
       </form>
     </div>
   </div>
