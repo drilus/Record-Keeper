@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
 from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit
-from keeperapp.models import Category
+from keeperapp.models import Category, CategoryInfo
 
 
 def home(request):
@@ -74,6 +74,14 @@ def user_categories(request):
     category = Category.objects.filter(user__username=request.user.username)
     return render(request, 'user/categories.html', {
         'categories': category
+    })
+
+
+@login_required(login_url='/user/sign-in')
+def category_info(request, category_id):
+    info = CategoryInfo.objects.get(id=category_id)
+    return render(request, 'user/category_info.html', {
+        'info': info
     })
 
 

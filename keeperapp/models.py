@@ -30,9 +30,9 @@ class Category(models.Model):
         return self.name
 
 
-class CategoryData(models.Model):
+class CategoryInfo(models.Model):
     class Meta:
-        verbose_name_plural = 'CategoryData'
+        verbose_name_plural = 'CategoryInfo'
 
     category = models.OneToOneField(
         Category,
@@ -40,13 +40,12 @@ class CategoryData(models.Model):
         related_name='category_data',
         default='unknown'
     )
-    name = models.CharField(max_length=500)
-    description = JSONField(max_length=2000)
+    description = models.TextField(max_length=2000)
     image = models.ImageField(upload_to='images/', blank=True)
     file = models.FileField(upload_to='files/', blank=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Option(models.Model):
@@ -59,7 +58,7 @@ class Option(models.Model):
 
 
 class Record(models.Model):
-    user = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='record_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='record_user')
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -69,3 +68,6 @@ class Record(models.Model):
     data = JSONField(max_length=2000)
     receipt = models.ImageField(upload_to='receipts/', blank=True)
     file = models.FileField(upload_to='files/', blank=True)
+
+    def __str__(self):
+        return str(self.id)
