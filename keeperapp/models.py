@@ -27,7 +27,7 @@ class Category(models.Model):
     options = JSONField(max_length=2000)
 
     def __str__(self):
-        return self.id
+        return self.name
 
 
 class CategoryData(models.Model):

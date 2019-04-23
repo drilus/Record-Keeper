@@ -18,5 +18,6 @@ urlpatterns = [
     path('user/overview', views.user_overview, name='user-overview'),
     path('user/settings', views.user_settings, name='user-settings'),
     path('user/categories', views.user_categories, name='user-categories'),
+    path('user/add_category', views.add_category, name='add-category'),
     path('user/records', views.user_records, name='user-records'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

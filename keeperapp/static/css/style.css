@@ -298,6 +298,7 @@ h1 { margin:50px auto;}
   top:50%;
   margin-left:-8px;
   transform: translateX(-100%)   translateY(-50%);
+  min-width: 200px;
 }
 
 [tooltip-position='top']::after{
