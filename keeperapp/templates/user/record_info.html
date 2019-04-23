@@ -1,0 +1,35 @@
+{% extends 'user/sidebar.html' %}
+
+{% block page %}
+  <div class="panel">
+    <div class="panel-heading bg-blue">
+      <h4 class="panel-title text-center text-white">{{ category_name }}</h4>
+    </div>
+    <div class="panel-body">
+      <br/>
+
+      <table class="table table-bordered table-hover table-striped">
+        <thead>
+          <tr class="bg-gray text-white">
+            <th>Data</th>
+            <th>Receipt</th>
+            <th>File</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% for record in records %}
+              <td scope="row">{{ record.data }}</td>
+              {% if record.image %}
+                <td><img class="img-circle" src="{{ MEDIA_URL }}{{ info.image }}" width="100" height="100"></td>
+              {% else %}
+                <td></td>
+              {% endif %}
+            <td>{{ record.file }}</td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
