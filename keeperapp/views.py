@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
-from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit
+from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit, CategoryForm, CategoryInfoForm, RecordForm
 from keeperapp.models import Category, CategoryInfo, Record
 
 
@@ -87,20 +87,59 @@ def category_info(request, category_id):
 
 @login_required(login_url='/user/sign-in')
 def add_category(request):
-    return render(request, 'user/add_category.html', {})
+    category_form = CategoryForm()
+    category_info_form = CategoryInfoForm()
+
+    if request.method == "POST":
+        category_form = CategoryForm(request.POST)
+        category_info_form = CategoryInfoForm(request.POST, request.FILES)
+
+        if category_form.is_valid() and category_info_form.is_valid():
+            new_category = category_form.save(commit=False)
+            new_category.user = request.user
+            new_category.save()
+            new_category_info = category_info_form.save(commit=False)
+            new_category_info.category = new_category
+            new_category_info.save()
+            return redirect(user_categories)
+
+    return render(request, 'user/add_category.html', {
+        'category_form': category_form,
+        'category_info_form': category_info_form
+    })
 
 
 @login_required(login_url='/user/sign-in')
 def user_records(request):
-    info = CategoryInfo.objects.filter(category__user__username='test_user')
+    info = CategoryInfo.objects.filter(category__user__username=request.user.username)
     return render(request, 'user/records.html', {
         'information': info
     })
 
 
 @login_required(login_url='/user/sign-in')
-def user_record_info(request, record_id):
-    records = Record.objects.filter(category__user__username='test_user', id=record_id)
+def add_record(request):
+    record_form = RecordForm()
+
+    if request.method == 'POST':
+        record_form = RecordForm(request.POST, request.FILES)
+        if record_form.is_valid():
+            new_record = record_form.save(commit=False)
+            new_record.user = request.user
+            new_record.save()
+            return redirect(user_record_info, new_record.category.id)
+
+    return render(request, 'user/add_record.html', {
+        'record_form': record_form
+    })
+
+
+@login_required(login_url='/user/sign-in')
+def user_record_info(request, category_id):
+    if Record.objects.filter(category__id=category_id).count() == 0:
+        return redirect(add_record)
+
+    records = Record.objects.filter(category__user__username=request.user.username, category__id=category_id)
     return render(request, 'user/record_info.html', {
         'records': records,
         'category_name': records[0].category.name

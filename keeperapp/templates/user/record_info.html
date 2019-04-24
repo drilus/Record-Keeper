@@ -25,7 +25,7 @@
               {% else %}
                 <td></td>
               {% endif %}
-            <td>{{ record.file }}</td>
+            <td><a href="{{ MEDIA_URL }}{{ record.file }}">{{ record.file }}</a></td>
             {% endfor %}
           </tr>
         </tbody>

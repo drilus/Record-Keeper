@@ -23,8 +23,8 @@ class Category(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
-    columns = JSONField(max_length=2000)
-    options = JSONField(max_length=2000)
+    columns = models.TextField(max_length=2000)
+    options = models.CharField(max_length=500)
 
     def __str__(self):
         return self.name
@@ -66,7 +66,6 @@ class Record(models.Model):
         related_name='record_category'
     )
     data = JSONField(max_length=2000)
-    receipt = models.ImageField(upload_to='receipts/', blank=True)
     file = models.FileField(upload_to='files/', blank=True)
 
     def __str__(self):

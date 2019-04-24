@@ -16,12 +16,12 @@
           </tr>
         </thead>
         <tbody>
+          {% for info in information %}
           <tr>
-            {% for info in information %}
-              <td scope="row"><a href="{% url 'user-records' info.id %}">{{ info.category.name }}</a></td>
-              <td>{{ info.description }}</td>
-            {% endfor %}
+            <td scope="row"><a href="{% url 'user-records' info.id %}">{{ info.category.name }}</a></td>
+            <td>{{ info.description }}</td>
           </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>

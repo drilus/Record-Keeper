@@ -21,5 +21,6 @@ urlpatterns = [
     path('user/category_info/<int:category_id>/', views.category_info, name='category-info'),
     path('user/add_category', views.add_category, name='add-category'),
     path('user/records', views.user_records, name='user-records'),
-    path('user/record_info/<int:record_id>/', views.user_record_info, name='user-records'),
+    path('user/record_info/<int:category_id>/', views.user_record_info, name='user-records'),
+    path('user/add_record', views.add_record, name='add-record'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

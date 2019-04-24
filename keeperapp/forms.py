@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from keeperapp.models import Profile
+from keeperapp.models import Profile, Category, CategoryInfo, Record
 
 
 class UserForm(forms.ModelForm):
@@ -9,7 +9,13 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'first_name', 'last_name', 'email')
+        fields = (
+            'username',
+            'password',
+            'first_name',
+            'last_name',
+            'email'
+        )
 
 
 class ProfileForm(forms.ModelForm):
@@ -30,4 +36,43 @@ class UserFormForEdit(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email")
+        fields = (
+            "first_name",
+            "last_name",
+            "email"
+        )
+
+
+class CategoryForm(forms.ModelForm):
+    options = forms.CharField(required=False)
+
+    class Meta:
+        model = Category
+        fields = (
+            'name',
+            'columns',
+            'options'
+        )
+
+
+class CategoryInfoForm(forms.ModelForm):
+    image = forms.ImageField(required=False)
+    file = forms.ImageField(required=False)
+
+    class Meta:
+        model = CategoryInfo
+        fields = (
+            'description',
+            'image',
+            'file'
+        )
+
+
+class RecordForm(forms.ModelForm):
+    class Meta:
+        model = Record
+        fields = (
+            'category',
+            'data',
+            'file'
+        )

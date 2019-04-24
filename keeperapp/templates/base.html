@@ -33,20 +33,11 @@
         <li><a href="/user/add_category" class="zoom-fab zoom-btn-sm zoom-btn-edit scale-transition scale-out" tooltip="Add new category" tooltip-position="left"><i class="fa fa-plus"></i></a></li>
         <li><a class="zoom-fab zoom-btn-sm zoom-btn-add scale-transition scale-out" tooltip="Edit category" tooltip-position="left"><i class="fa fa-pen"></i></a></li>
       {% else %}
-        <li><a class="zoom-fab zoom-btn-sm zoom-btn-edit scale-transition scale-out" tooltip="Add new record" tooltip-position="left"><i class="fa fa-plus"></i></a></li>
+        <li><a href="/user/add_record"<a class="zoom-fab zoom-btn-sm zoom-btn-edit scale-transition scale-out" tooltip="Add new record" tooltip-position="left"><i class="fa fa-plus"></i></a></li>
         <li><a class="zoom-fab zoom-btn-sm zoom-btn-add scale-transition scale-out" tooltip="Edit record" tooltip-position="left"><i class="fa fa-pen"></i></a></li>
       {% endif %}
       <li><a class="zoom-fab zoom-btn-sm zoom-btn-tangram scale-transition scale-out" tooltip="Something else" tooltip-position="left"><i class="fa fa-edit"></i></a></li>
     </ul>
-    <!-- <div class="zoom-card scale-transition scale-out">
-      <ul class="zoom-card-content">
-        <li>Content 1</li>
-        <li>Content 2</li>
-        <li>Content 3</li>
-        <li>Content 4</li>
-        <li>Content 5</li>
-      </ul>
-    </div> -->
   </div>
   <script src="{% static 'js/fab.js' %}"></script>
 </body>
