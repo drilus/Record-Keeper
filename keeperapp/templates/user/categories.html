@@ -13,15 +13,20 @@
           <tr class="bg-gray text-white">
             <th>Name</th>
             <th>Columns</th>
-            <th>Options</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>File</th>
           </tr>
         </thead>
         <tbody>
-          {% for category in categories %}
+          {% for cat_ex in info %}
             <tr>
-              <td scope="row"><a href="{% url 'category-info' category.id %}">{{ category.name }}</a></td>
-              <td>{{ category.columns }}  </td>
-              <td>{{ category.options }}</td>
+              <td scope="row"><a href="{% url 'edit-category' cat_ex.category.id %}">{{ cat_ex.category.name }}</a></td>
+              <td>{{ cat_ex.category.columns }}  </td>
+              <td>{{ cat_ex.description }}</td>
+              <td><img class="img-circle" src="{{ MEDIA_URL }}{{ cat_ex.image }}"
+                width="50" height="50"></td>
+              <td>{{ cat_ex.file }}</td>
             </tr>
           {% endfor %}
         </tbody>

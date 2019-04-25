@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
 from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit, CategoryForm, CategoryInfoForm, RecordForm
-from keeperapp.models import Category, CategoryInfo, Record
+from keeperapp.models import CategoryInfo, Record
 
 
 def home(request):
@@ -71,17 +71,31 @@ def user_settings(request):
 
 @login_required(login_url='/user/sign-in')
 def user_categories(request):
-    category = Category.objects.filter(user__username=request.user.username)
+    info = CategoryInfo.objects.filter(category__user__username=request.user.username)
     return render(request, 'user/categories.html', {
-        'categories': category
+        'info': info
     })
 
 
 @login_required(login_url='/user/sign-in')
-def category_info(request, category_id):
-    info = CategoryInfo.objects.get(id=category_id)
-    return render(request, 'user/category_info.html', {
-        'info': info
+def edit_category(request, category_id):
+    category_info = CategoryInfo.objects.get(id=category_id)
+    category_form = CategoryForm(instance=category_info.category)
+    category_info_form = CategoryInfoForm(instance=category_info)
+
+    if request.method == "POST":
+        category_form = CategoryForm(request.POST, instance=category_info.category)
+        category_info_form = CategoryInfoForm(
+            request.POST, request.FILES, instance=category_info
+        )
+
+    if category_form.is_valid() and category_info_form.is_valid():
+        category_form.save()
+        category_info_form.save()
+
+    return render(request, 'user/edit_category.html', {
+        'category_form': category_form,
+        'category_info_form': category_info_form
     })
 
 
@@ -141,11 +155,8 @@ def user_record_info(request, category_id):
 
     records = Record.objects.filter(
         category__user__username=request.user.username, category__id=category_id)
-    category_name = Record.objects.filter(
-        category__user__username=request.user.username, category__id=category_id
-    )[0].category.name
 
     return render(request, 'user/record_info.html', {
         'records': records,
-        'category_name': category_name
+        'category_name': records[0].category.name
     })
