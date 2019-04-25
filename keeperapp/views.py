@@ -139,8 +139,13 @@ def user_record_info(request, category_id):
     if Record.objects.filter(category__id=category_id).count() == 0:
         return redirect(add_record)
 
-    records = Record.objects.filter(category__user__username=request.user.username, category__id=category_id)
+    records = Record.objects.filter(
+        category__user__username=request.user.username, category__id=category_id)
+    category_name = Record.objects.filter(
+        category__user__username=request.user.username, category__id=category_id
+    )[0].category.name
+
     return render(request, 'user/record_info.html', {
         'records': records,
-        'category_name': records[0].category.name
+        'category_name': category_name
     })
