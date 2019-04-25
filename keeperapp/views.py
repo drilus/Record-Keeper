@@ -162,3 +162,22 @@ def user_record_info(request, category_id):
         'records': records,
         'category_name': records[0].category.name
     })
+
+
+@login_required(login_url='/user/sign-in')
+def edit_record(request, record_id):
+    record = Record.objects.get(id=record_id)
+    record_form = RecordForm(instance=record)
+
+    if request.method == "POST":
+        record_form = RecordForm(
+            request.POST, request.FILES, instance=record
+        )
+
+    if record_form.is_valid():
+        record_form.save()
+        return redirect(user_record_info, record.category.id)
+
+    return render(request, 'user/edit_record.html', {
+        'record_form': record_form
+    })

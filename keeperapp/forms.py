@@ -57,7 +57,7 @@ class CategoryForm(forms.ModelForm):
 
 class CategoryInfoForm(forms.ModelForm):
     image = forms.ImageField(required=False)
-    file = forms.ImageField(required=False)
+    file = forms.FileField(required=False)
 
     class Meta:
         model = CategoryInfo
@@ -69,6 +69,8 @@ class CategoryInfoForm(forms.ModelForm):
 
 
 class RecordForm(forms.ModelForm):
+    file = forms.FileField(required=False)
+
     class Meta:
         model = Record
         fields = (
