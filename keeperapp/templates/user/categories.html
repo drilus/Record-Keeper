@@ -24,7 +24,7 @@
               <td scope="row"><a href="{% url 'edit-category' cat_ex.category.id %}">{{ cat_ex.category.name }}</a></td>
               <td>{{ cat_ex.category.columns }}  </td>
               <td>{{ cat_ex.description }}</td>
-              <td><img class="img-circle" src="{{ MEDIA_URL }}{{ cat_ex.image }}"
+              <td align="middle"><img class="img-circle" src="{{ MEDIA_URL }}{{ cat_ex.image }}"
                 width="50" height="50"></td>
               <td>{{ cat_ex.file }}</td>
             </tr>

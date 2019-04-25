@@ -45,6 +45,7 @@ def user_sign_up(request):
 
 @login_required(login_url='/user/sign-in')
 def user_overview(request):
+    # TODO: Calculate chart based on JSON keys & values. Example: For each restaurant name calculate the total
     return render(request, 'user/overview.html', {})
 
 
@@ -92,6 +93,7 @@ def edit_category(request, category_id):
     if category_form.is_valid() and category_info_form.is_valid():
         category_form.save()
         category_info_form.save()
+        return redirect(user_categories)
 
     return render(request, 'user/edit_category.html', {
         'category_form': category_form,
