@@ -1,5 +1,41 @@
 {% extends 'user/sidebar.html' %}
 
+{% block script %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+{% endblock %}
+
 {% block page %}
-  Overview
+  <div class="row">
+    <div class="col-lg-8">
+      <!-- Cost by category -->
+      <div class="panel">
+        <div class="panel-heading bg-blue">
+          <h4 class="panel-title text-center text-white">
+            Total "Cost" by Category
+          </h4>
+        </div>
+        <div class="panel-body">
+          <canvas id="costChart" height="242"></canvas>
+          <script>
+            var ctx = document.getElementById("costChart").getContext("2d");
+            var data = {
+              labels: {{ spending.labels|safe }},
+              datasets: [
+                {
+                  backgroundColor: [
+                    "#36A2EB", "#FFCE56"
+                  ],
+                  data: {{ spending.data }}
+                }
+              ]
+            };
+            new Chart(ctx, {
+              type: 'pie',
+              data: data
+            })
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

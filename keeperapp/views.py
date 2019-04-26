@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
 from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit, CategoryForm, CategoryInfoForm, RecordForm
-from keeperapp.models import CategoryInfo, Record
+from keeperapp.models import CategoryInfo, Record, Category
 
 
 def home(request):
@@ -46,7 +46,30 @@ def user_sign_up(request):
 @login_required(login_url='/user/sign-in')
 def user_overview(request):
     # TODO: Calculate chart based on JSON keys & values. Example: For each restaurant name calculate the total
-    return render(request, 'user/overview.html', {})
+    total_spent = 0
+
+    # calculate all categories that have a "cost" field. This field should be dynamic / variable
+    categories = Category.objects.filter(user__username=request.user.username, columns__icontains='cost')
+
+    # calculate total for each category with a "cost" field
+    total_per_category = []
+    for category in categories:
+        cost = sum(float(record.data['Cost']) for record in Record.objects.filter(
+            user__username=request.user.username, category__id=category.id
+        ))
+        # total_per_category.append('${0:,.2f}'.format(cost))
+        total_per_category.append(cost)
+        total_spent = total_spent + cost
+
+    spending = {
+        'labels': [category.name for category in categories],
+        'data': total_per_category
+    }
+
+    return render(request, 'user/overview.html', {
+        'total_spent': '${0:,.2f}'.format(total_spent),
+        'spending': spending
+    })
 
 
 @login_required(login_url='/user/sign-in')
@@ -158,9 +181,14 @@ def user_record_info(request, category_id):
     records = Record.objects.filter(
         category__user__username=request.user.username, category__id=category_id)
 
+    columns = []
+    for key, value in records[0].data.items():
+        columns.append(key)
+
     return render(request, 'user/record_info.html', {
         'records': records,
-        'category_name': records[0].category.name
+        'category_name': records[0].category.name,
+        'columns': columns
     })
 
 
