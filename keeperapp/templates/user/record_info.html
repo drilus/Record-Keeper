@@ -26,7 +26,7 @@
                 {% for key, value in record.data.items %}
                   <td scope="row">{{ value }}</td>
                 {% endfor %}
-                <td><a href="{{ MEDIA_URL }}{{ record.file }}">{{ record.file }}</a></td>
+                <td><a href="{{ MEDIA_URL }}{{ record.file }}">{{ record.file.name | getfilename }}</a></td>
               </tr>
             {% endfor %}
         </tbody>
