@@ -6,7 +6,7 @@
 
 {% block page %}
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-6">
       <!-- Cost by category -->
       <div class="panel">
         <div class="panel-heading bg-blue">
@@ -15,7 +15,7 @@
           </h4>
         </div>
         <div class="panel-body">
-          <canvas id="costChart" height="242"></canvas>
+          <canvas id="costChart" height="250"></canvas>
           <script>
             var ctx = document.getElementById("costChart").getContext("2d");
             var data = {
@@ -23,9 +23,44 @@
               datasets: [
                 {
                   backgroundColor: [
-                    "#36A2EB", "#FFCE56"
+                    "#36A2EB", "#FFCE56", "#440D0F", "#070707",
+                    "#330C2F", "#36453B", "#A23B72", "#C73E1D",
+                    "#3B1F2B", "#82735C", "#99C24D", "#F18F01"
                   ],
                   data: {{ spending.data }}
+                }
+              ]
+            };
+            new Chart(ctx, {
+              type: 'pie',
+              data: data
+            })
+          </script>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <!-- Total records per category -->
+      <div class="panel">
+        <div class="panel-heading bg-blue">
+          <h4 class="panel-title text-center text-white">
+            Total records per category
+          </h4>
+        </div>
+        <div class="panel-body">
+          <canvas id="totalRecCat" height="250"></canvas>
+          <script>
+            var ctx = document.getElementById("totalRecCat").getContext("2d");
+            var data = {
+              labels: {{ records_per_category.labels|safe }},
+              datasets: [
+                {
+                  backgroundColor: [
+                    "#36A2EB", "#FFCE56", "#440D0F", "#070707",
+                    "#330C2F", "#36453B", "#A23B72", "#C73E1D",
+                    "#3B1F2B", "#82735C", "#99C24D", "#F18F01"
+                  ],
+                  data: {{ records_per_category.data }}
                 }
               ]
             };

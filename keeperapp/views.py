@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
+from django.db.models import Count
 
 from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit, CategoryForm, CategoryInfoForm, RecordForm
 from keeperapp.models import CategoryInfo, Record, Category
@@ -45,10 +46,7 @@ def user_sign_up(request):
 
 @login_required(login_url='/user/sign-in')
 def user_overview(request):
-    # TODO: Calculate chart based on JSON keys & values. Example: For each restaurant name calculate the total
-    total_spent = 0
-
-    # calculate all categories that have a "cost" field. This field should be dynamic / variable
+    # Only pull categories that have a 'cost' field
     categories = Category.objects.filter(user__username=request.user.username, columns__icontains='cost')
 
     # calculate total for each category with a "cost" field
@@ -59,7 +57,14 @@ def user_overview(request):
         ))
         # total_per_category.append('${0:,.2f}'.format(cost))
         total_per_category.append(cost)
-        total_spent = total_spent + cost
+
+    # count total records per category
+    record_count = Category.objects.annotate(num_records=Count('record_category'))
+
+    records_per_category = {
+        'labels': [cat.name for cat in Category.objects.filter(user__username=request.user.username)],
+        'data': [rec.num_records for rec in record_count]
+    }
 
     spending = {
         'labels': [category.name for category in categories],
@@ -67,8 +72,8 @@ def user_overview(request):
     }
 
     return render(request, 'user/overview.html', {
-        'total_spent': '${0:,.2f}'.format(total_spent),
-        'spending': spending
+        'spending': spending,
+        'records_per_category': records_per_category
     })
 
 
