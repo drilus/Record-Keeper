@@ -44,8 +44,6 @@ class UserFormForEdit(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
-    options = forms.CharField(required=False)
-
     class Meta:
         model = Category
         fields = (

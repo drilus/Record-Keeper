@@ -24,7 +24,7 @@ class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
     columns = models.TextField(max_length=2000)
-    options = models.CharField(max_length=500)
+    options = JSONField(max_length=2000, default='{}')
 
     def __str__(self):
         return self.name

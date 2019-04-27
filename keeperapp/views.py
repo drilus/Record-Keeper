@@ -6,6 +6,7 @@ from django.db.models import Count
 
 from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit, CategoryForm, CategoryInfoForm, RecordForm
 from keeperapp.models import CategoryInfo, Record, Category
+import datetime
 
 
 def home(request):
@@ -185,6 +186,23 @@ def user_record_info(request, category_id):
 
     records = Record.objects.filter(
         category__user__username=request.user.username, category__id=category_id)
+
+    # {
+    #   "sort_by": {
+    #     "column": {
+    #       "name": "Date",
+    #       "descending": "True"
+    #     },
+    #     "format": "%Y/%m/%d"
+    #   }
+    # }
+    options = records[0].category.options
+    if options['sort_by']:
+        descending = options['sort_by']['column']['descending']
+        column = options['sort_by']['column']['name']
+        format = options['sort_by']['format']
+        records = sorted(records, key=lambda x: datetime.datetime.strptime(
+            x.data[column], format).date(), reverse=descending)
 
     columns = []
     for key, value in records[0].data.items():
