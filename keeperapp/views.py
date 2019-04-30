@@ -164,10 +164,10 @@ def user_records(request):
 
 @login_required(login_url='/user/sign-in')
 def add_record(request):
-    record_form = RecordForm()
+    record_form = RecordForm(request.user)
 
     if request.method == 'POST':
-        record_form = RecordForm(request.POST, request.FILES)
+        record_form = RecordForm(request.user, request.POST, request.FILES)
         if record_form.is_valid():
             new_record = record_form.save(commit=False)
             new_record.user = request.user
@@ -197,7 +197,7 @@ def user_record_info(request, category_id):
     #   }
     # }
     options = records[0].category.options
-    if options['sort_by']:
+    if 'sort_by' in options.keys():
         descending = options['sort_by']['column']['descending']
         column = options['sort_by']['column']['name']
         format = options['sort_by']['format']

@@ -76,3 +76,7 @@ class RecordForm(forms.ModelForm):
             'data',
             'file'
         )
+
+    def __init__(self, user, *args, **kwargs):
+        super(RecordForm, self).__init__(*args, **kwargs)
+        self.fields['category'].queryset = Category.objects.filter(user=user)

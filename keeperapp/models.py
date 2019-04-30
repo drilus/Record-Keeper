@@ -11,7 +11,9 @@ class Profile(models.Model):
     city = models.CharField(max_length=500)
     state = models.CharField(max_length=500)
     zip = models.CharField(max_length=500)
-    avatar = models.ImageField(upload_to='profile_avatar/', blank=True)
+    avatar = models.ImageField(upload_to='profile_avatar/',
+                               blank=True,
+                               default='static/img/default-profile-icon-24.jpg')
 
     def __str__(self):
         return self.user.username
