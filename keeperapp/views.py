@@ -6,6 +6,7 @@ from django.db.models import Count
 
 from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit, CategoryForm, CategoryInfoForm, RecordForm
 from keeperapp.models import CategoryInfo, Record, Category
+from keeperapp.serializers import CategorySerializer
 import datetime
 
 
@@ -165,6 +166,11 @@ def user_records(request):
 @login_required(login_url='/user/sign-in')
 def add_record(request):
     record_form = RecordForm(request.user)
+    category_names = CategorySerializer(
+        Category.objects.filter(user=request.user),
+        many=True,
+        context={"request": request}
+    ).data
 
     if request.method == 'POST':
         record_form = RecordForm(request.user, request.POST, request.FILES)
@@ -175,7 +181,8 @@ def add_record(request):
             return redirect(user_record_info, new_record.category.id)
 
     return render(request, 'user/add_record.html', {
-        'record_form': record_form
+        'record_form': record_form,
+        'category_names': category_names
     })
 
 
