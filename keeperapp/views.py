@@ -225,11 +225,11 @@ def user_record_info(request, category_id):
 @login_required(login_url='/user/sign-in')
 def edit_record(request, record_id):
     record = Record.objects.get(id=record_id)
-    record_form = RecordForm(instance=record)
+    record_form = RecordForm(request.user, instance=record)
 
     if request.method == "POST":
         record_form = RecordForm(
-            request.POST, request.FILES, instance=record
+            request.user, request.POST, request.FILES, instance=record
         )
 
     if record_form.is_valid():
