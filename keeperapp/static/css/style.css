@@ -131,6 +131,7 @@ h1 { margin:50px auto;}
   height: 70px;
 }
 
+/* Floating Action Button */
 .zoom-fab {
   display: inline-block;
   width: 40px;
@@ -200,6 +201,7 @@ h1 { margin:50px auto;}
   padding: 10px;
 }
 
+/* Floating cards for FAB. Currently unused */
 .zoom-card {
   position: absolute;
   right: 150px;
@@ -231,6 +233,11 @@ h1 { margin:50px auto;}
   transform: scale(1);
 }
 
+/* Custom tooltips for various controls.
+   To use just add a 'tooltip' class to the element
+   Example:
+     tooltip="This is my tooltip" tooltip-position="left"
+*/
 [tooltip]{
   margin: 0px 0px;
   position:relative;

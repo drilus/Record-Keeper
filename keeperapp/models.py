@@ -5,6 +5,7 @@ from jsonfield import JSONField
 
 
 class Profile(models.Model):
+    # Be sure to use your own default image and path or the default profile image will be broken
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     phone = models.CharField(max_length=500)
     address = models.CharField(max_length=500)
@@ -20,6 +21,8 @@ class Profile(models.Model):
 
 
 class Category(models.Model):
+    # The columns field is a comma separated list of names that will populate the record headers
+    # Example: Name, Cost, Date
     class Meta:
         verbose_name_plural = 'categories'
 
@@ -33,6 +36,8 @@ class Category(models.Model):
 
 
 class CategoryInfo(models.Model):
+    # This is the extended Category information.
+    # TODO: Combine CategoryInfo & Category
     class Meta:
         verbose_name_plural = 'CategoryInfo'
 
@@ -51,6 +56,7 @@ class CategoryInfo(models.Model):
 
 
 class Option(models.Model):
+    # This model is unused. It's a placeholder for themes, and various options
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_options')
     view = models.CharField(max_length=500)
     theme = models.CharField(max_length=500)
@@ -60,6 +66,7 @@ class Option(models.Model):
 
 
 class Record(models.Model):
+    # The data field is composed of JSON and uses the Category.columns as Key names
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='record_user')
     category = models.ForeignKey(
         Category,

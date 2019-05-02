@@ -20,5 +20,6 @@
   </div>
 </div>
 <script src="{% static 'js/json_hook.js' %}"></script>
+<!-- We use 'json_script' to sanitize the object data and forward to our JavaScript -->
 {{ category_names|json_script:"category_data" }}
 {% endblock %}

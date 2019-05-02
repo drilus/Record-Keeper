@@ -20,6 +20,9 @@ def user_home(request):
 
 
 def user_sign_up(request):
+    # Combine user and profile models
+    # TODO: Add password checks (complexity, enter pass twice)
+    # TODO: Check for username availability -- will probably need to be a separate API request
     user_form = UserForm()
     profile_form = ProfileForm()
 
@@ -63,6 +66,7 @@ def user_overview(request):
     # count total records per category
     record_count = Category.objects.annotate(num_records=Count('record_category'))
 
+    # ChartJS uses 'labels' and 'data' arrays to display graph's
     records_per_category = {
         'labels': [cat.name for cat in Category.objects.filter(user__username=request.user.username)],
         'data': [rec.num_records for rec in record_count]
@@ -81,6 +85,8 @@ def user_overview(request):
 
 @login_required(login_url='/user/sign-in')
 def user_settings(request):
+    # Allow the user to change their profile information
+    # This view can be extended to use the future Options model
     user_form = UserFormForEdit(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
 
@@ -133,6 +139,8 @@ def edit_category(request, category_id):
 
 @login_required(login_url='/user/sign-in')
 def add_category(request):
+    # We are passing the Category & CategoryInfo models to a form.
+    # TODO: Refactor: Combine Category & CategoryInfo models
     category_form = CategoryForm()
     category_info_form = CategoryInfoForm()
 
@@ -166,12 +174,15 @@ def user_records(request):
 @login_required(login_url='/user/sign-in')
 def add_record(request):
     record_form = RecordForm(request.user)
+
+    # Need to pass category object through a serializer to return JSON
     category_names = CategorySerializer(
         Category.objects.filter(user=request.user),
         many=True,
         context={"request": request}
     ).data
 
+    # Don't save the record object until after we assign the user
     if request.method == 'POST':
         record_form = RecordForm(request.user, request.POST, request.FILES)
         if record_form.is_valid():
@@ -180,6 +191,7 @@ def add_record(request):
             new_record.save()
             return redirect(user_record_info, new_record.category.id)
 
+    # We need to pass the Form data and the category column data to use in record headers.
     return render(request, 'user/add_record.html', {
         'record_form': record_form,
         'category_names': category_names
@@ -188,6 +200,7 @@ def add_record(request):
 
 @login_required(login_url='/user/sign-in')
 def user_record_info(request, category_id):
+    # Redirect user to add a record if no records exist
     if Record.objects.filter(category__id=category_id).count() == 0:
         return redirect(add_record)
 
@@ -203,6 +216,7 @@ def user_record_info(request, category_id):
     #     "format": "%Y/%m/%d"
     #   }
     # }
+    # TODO: Need a better method for sorting data
     options = records[0].category.options
     if 'sort_by' in options.keys():
         descending = options['sort_by']['column']['descending']
@@ -211,6 +225,7 @@ def user_record_info(request, category_id):
         records = sorted(records, key=lambda x: datetime.datetime.strptime(
             x.data[column], format).date(), reverse=descending)
 
+    # Get columns to use as table headers
     columns = []
     for key, value in records[0].data.items():
         columns.append(key)
@@ -224,6 +239,7 @@ def user_record_info(request, category_id):
 
 @login_required(login_url='/user/sign-in')
 def edit_record(request, record_id):
+    # Grab the record using it's internal id. Pass the record object to a form
     record = Record.objects.get(id=record_id)
     record_form = RecordForm(request.user, instance=record)
 

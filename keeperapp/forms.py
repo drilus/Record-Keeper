@@ -77,6 +77,8 @@ class RecordForm(forms.ModelForm):
             'file'
         )
 
+    # Only pull category objects that are created by the user
+    # Default uses Category.objects.all()
     def __init__(self, user, *args, **kwargs):
         super(RecordForm, self).__init__(*args, **kwargs)
         self.fields['category'].queryset = Category.objects.filter(user=user)
