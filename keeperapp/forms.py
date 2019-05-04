@@ -69,13 +69,31 @@ class CategoryInfoForm(forms.ModelForm):
         )
 
 
-class RecordForm(forms.ModelForm):
+class AddRecordForm(forms.ModelForm):
     file = forms.FileField(required=False)
     data = JSONField()
 
     class Meta:
         model = Record
         widgets = {'data': forms.HiddenInput()}
+        fields = (
+            'category',
+            'data',
+            'file'
+        )
+
+    # Only pull category objects that are created by the user
+    # Default uses Category.objects.all()
+    def __init__(self, user, *args, **kwargs):
+        super(AddRecordForm, self).__init__(*args, **kwargs)
+        self.fields['category'].queryset = Category.objects.filter(user=user)
+
+
+class RecordForm(forms.ModelForm):
+    file = forms.FileField(required=False)
+
+    class Meta:
+        model = Record
         fields = (
             'category',
             'data',

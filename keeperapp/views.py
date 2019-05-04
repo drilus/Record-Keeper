@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.db.models import Count
 
 from keeperapp.forms import ProfileForm, UserFormForEdit, CategoryForm, CategoryInfoForm, \
-    RecordForm, UserCreationForm, RecordColumnForm
+    RecordForm, UserCreationForm, RecordColumnForm, AddRecordForm
 from keeperapp.models import CategoryInfo, Record, Category
 from keeperapp.serializers import CategorySerializer
 import datetime
@@ -178,7 +178,7 @@ def user_records(request):
 
 @login_required(login_url='/user/sign-in')
 def add_record(request):
-    record_form = RecordForm(request.user)
+    record_form = AddRecordForm(request.user)
     record_columns = RecordColumnForm(request.user)
 
     # Need to pass category object through a serializer to return JSON
