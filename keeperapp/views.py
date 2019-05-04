@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.db.models import Count
 
-from keeperapp.forms import ProfileForm, UserForm, UserFormForEdit, CategoryForm, CategoryInfoForm, RecordForm
+from keeperapp.forms import ProfileForm, UserFormForEdit, CategoryForm, CategoryInfoForm, \
+    RecordForm, UserCreationForm, RecordColumnForm
 from keeperapp.models import CategoryInfo, Record, Category
 from keeperapp.serializers import CategorySerializer
 import datetime
@@ -20,31 +21,35 @@ def user_home(request):
 
 
 def user_sign_up(request):
-    # Combine user and profile models
-    # TODO: Add password checks (complexity, enter pass twice)
     # TODO: Check for username availability -- will probably need to be a separate API request
-    user_form = UserForm()
+    user_creation_form = UserCreationForm()
     profile_form = ProfileForm()
 
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
+        user_creation_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST, request.FILES)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            new_user = User.objects.create_user(**user_form.cleaned_data)
+        if user_creation_form.is_valid() and profile_form.is_valid():
+            new_user = User.objects.create_user(
+                username=user_creation_form.cleaned_data['username'],
+                email=user_creation_form.cleaned_data['email'],
+                password=user_creation_form.cleaned_data['password1'],
+                first_name=user_creation_form.cleaned_data['first_name'],
+                last_name=user_creation_form.cleaned_data['last_name']
+            )
             new_profile = profile_form.save(commit=False)
             new_profile.user = new_user
             new_profile.save()
 
             login(request, authenticate(
-                username=user_form.cleaned_data['username'],
-                password=user_form.cleaned_data['password']
+                username=user_creation_form.cleaned_data['username'],
+                password=user_creation_form.cleaned_data['password1']
             ))
 
             return redirect(user_home)
 
     return render(request, 'user/sign_up.html', {
-        'user_form': user_form,
+        'user_form': user_creation_form,
         'profile_form': profile_form
     })
 
@@ -52,19 +57,19 @@ def user_sign_up(request):
 @login_required(login_url='/user/sign-in')
 def user_overview(request):
     # Only pull categories that have a 'cost' field
-    categories = Category.objects.filter(user__username=request.user.username, columns__icontains='cost')
+    categories = Category.objects.filter(user=request.user, columns__icontains='cost')
 
     # calculate total for each category with a "cost" field
     total_per_category = []
     for category in categories:
         cost = sum(float(record.data['Cost']) for record in Record.objects.filter(
-            user__username=request.user.username, category__id=category.id
+            user=request.user, category__id=category.id
         ))
         # total_per_category.append('${0:,.2f}'.format(cost))
         total_per_category.append(cost)
 
     # count total records per category
-    record_count = Category.objects.annotate(num_records=Count('record_category'))
+    record_count = Category.objects.filter(user=request.user).annotate(num_records=Count('record_category'))
 
     # ChartJS uses 'labels' and 'data' arrays to display graph's
     records_per_category = {
@@ -174,6 +179,7 @@ def user_records(request):
 @login_required(login_url='/user/sign-in')
 def add_record(request):
     record_form = RecordForm(request.user)
+    record_columns = RecordColumnForm(request.user)
 
     # Need to pass category object through a serializer to return JSON
     category_names = CategorySerializer(
@@ -194,6 +200,7 @@ def add_record(request):
     # We need to pass the Form data and the category column data to use in record headers.
     return render(request, 'user/add_record.html', {
         'record_form': record_form,
+        'record_columns': record_columns,
         'category_names': category_names
     })
 

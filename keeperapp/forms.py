@@ -1,17 +1,20 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+
 from keeperapp.models import Profile, Category, CategoryInfo, Record
+from jsonfield import JSONField
 
 
-class UserForm(forms.ModelForm):
-    email = forms.CharField(max_length=100, required=True)
-    password = forms.CharField(widget=forms.PasswordInput())
+class UserCreationForm(UserCreationForm):
+    first_name = forms.CharField(max_length=100)
+    last_name = forms.CharField(max_length=100)
+    email = forms.EmailField(required=True)
 
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = User
-        fields = (
+        fields = UserCreationForm.Meta.fields + (
             'username',
-            'password',
             'first_name',
             'last_name',
             'email'
@@ -68,9 +71,11 @@ class CategoryInfoForm(forms.ModelForm):
 
 class RecordForm(forms.ModelForm):
     file = forms.FileField(required=False)
+    data = JSONField()
 
     class Meta:
         model = Record
+        widgets = {'data': forms.HiddenInput()}
         fields = (
             'category',
             'data',
@@ -82,3 +87,15 @@ class RecordForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(RecordForm, self).__init__(*args, **kwargs)
         self.fields['category'].queryset = Category.objects.filter(user=user)
+
+
+class RecordColumnForm(forms.Form):
+
+    def __init__(self, user, *args, **kwargs):
+        super(RecordColumnForm, self).__init__(*args, **kwargs)
+        names = Category.objects.filter(user=user)
+        for name in names:
+            columns = name.columns.split(',')
+            for column in columns:
+                self.fields['column_{}_{}'.format(name.id, column.strip())] = \
+                    forms.CharField(label=column.strip(), required=False)
