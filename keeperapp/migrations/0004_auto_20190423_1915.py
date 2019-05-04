@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='categorydata',
             name='category',
-            field=models.OneToOneField(default='unknown', on_delete=django.db.models.deletion.CASCADE, related_name='category_data', to='keeperapp.Category'),
+            field=models.OneToOneField(default=0, on_delete=django.db.models.deletion.CASCADE, related_name='category_data', to='keeperapp.Category'),
         ),
         migrations.AlterField(
             model_name='categorydata',
