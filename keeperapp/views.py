@@ -12,7 +12,7 @@ import datetime
 
 
 def home(request):
-    return redirect(user_home)  # noqa: F821
+    return redirect(user_home)
 
 
 @login_required(login_url='/user/sign-in')
@@ -195,7 +195,7 @@ def add_record(request):
             new_record = record_form.save(commit=False)
             new_record.user = request.user
             new_record.save()
-            return redirect(user_record_info, new_record.category.id)
+            return redirect(user_category_records, new_record.category.id)
 
     # We need to pass the Form data and the category column data to use in record headers.
     return render(request, 'user/add_record.html', {
@@ -206,7 +206,7 @@ def add_record(request):
 
 
 @login_required(login_url='/user/sign-in')
-def user_record_info(request, category_id):
+def user_category_records(request, category_id):
     # Redirect user to add a record if no records exist
     if Record.objects.filter(category__id=category_id).count() == 0:
         return redirect(add_record)
@@ -225,7 +225,7 @@ def user_record_info(request, category_id):
     # }
     # TODO: Need a better method for sorting data
     options = records[0].category.options
-    if 'sort_by' in options.keys():
+    if 'sort_by' in options.keys(): 
         descending = options['sort_by']['column']['descending']
         column = options['sort_by']['column']['name']
         format = options['sort_by']['format']
@@ -233,9 +233,7 @@ def user_record_info(request, category_id):
             x.data[column], format).date(), reverse=descending)
 
     # Get columns to use as table headers
-    columns = []
-    for key, value in records[0].data.items():
-        columns.append(key)
+    columns = list(map(lambda x: x.strip(), Category.objects.get(id=category_id).columns.split(',')))
 
     return render(request, 'user/record_info.html', {
         'records': records,
@@ -257,7 +255,7 @@ def edit_record(request, record_id):
 
     if record_form.is_valid():
         record_form.save()
-        return redirect(user_record_info, record.category.id)
+        return redirect(user_category_records, record.category.id)
 
     return render(request, 'user/edit_record.html', {
         'record_form': record_form
