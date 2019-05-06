@@ -225,7 +225,7 @@ def user_category_records(request, category_id):
     # }
     # TODO: Need a better method for sorting data
     options = records[0].category.options
-    if 'sort_by' in options.keys(): 
+    if 'sort_by' in options.keys():
         descending = options['sort_by']['column']['descending']
         column = options['sort_by']['column']['name']
         format = options['sort_by']['format']
