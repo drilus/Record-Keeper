@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %} Record Keeper {% endblock %}
+
+{% block script %}
+{% endblock %}
+
+{% block sidebar %}
+  {% url 'user-overview' as user_overview_url %}
+  {% url 'user-settings' as user_settings_url %}
+  {% url 'user-categories' as user_categories_url %}
+  {% url 'user-records' as user_records_url %}
+
+  <div class="text-center">
+    <img class="img-circle" src="{{ request.user.profile.avatar.url }}"
+      width="100" height="100">
+    <br/>
+    <br/>
+    <h4>{{ request.user.get_full_name }}</h4>
+  </div>
+
+  <div class="list-group">
+    <a href="{% url 'user-overview' %}"
+      class="list-group-item {% if request.path == user_overview_url %} active {% endif %}">Overview</a>
+    <a href="{% url 'user-categories' %}"
+      class="list-group-item {% if request.path == user_categories_url %} active {% endif %}">Categories</a>
+    <a href="{% url 'user-records' %}"
+      class="list-group-item {% if request.path == user_records_url %} active {% endif %}">Records</a>
+    <a href="{% url 'user-settings' %}"
+      class="list-group-item {% if request.path == user_settings_url %} active {% endif %}">Settings</a>
+  </div>
+
+  <div class="text-center">
+    <a href="{% url 'user-sign-out' %}?next={{ request.path }}"
+      class="btn btn-pink">Logout</a>
+  </div>
+{% endblock %}

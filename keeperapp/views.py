@@ -218,7 +218,7 @@ def user_category_records(request, category_id):
     #   "sort_by": {
     #     "column": {
     #       "name": "Date",
-    #       "descending": "True"
+    #       "descending": true
     #     },
     #     "format": "%Y/%m/%d"
     #   }

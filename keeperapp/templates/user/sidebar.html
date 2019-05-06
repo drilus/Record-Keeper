@@ -11,27 +11,38 @@
   {% url 'user-categories' as user_categories_url %}
   {% url 'user-records' as user_records_url %}
 
-  <div class="text-center">
-    <img class="img-circle" src="{{ request.user.profile.avatar.url }}"
-      width="100" height="100">
-    <br/>
-    <br/>
-    <h4>{{ request.user.get_full_name }}</h4>
-  </div>
-
-  <div class="list-group">
-    <a href="{% url 'user-overview' %}"
-      class="list-group-item {% if request.path == user_overview_url %} active {% endif %}">Overview</a>
-    <a href="{% url 'user-categories' %}"
-      class="list-group-item {% if request.path == user_categories_url %} active {% endif %}">Categories</a>
-    <a href="{% url 'user-records' %}"
-      class="list-group-item {% if request.path == user_records_url %} active {% endif %}">Records</a>
-    <a href="{% url 'user-settings' %}"
-      class="list-group-item {% if request.path == user_settings_url %} active {% endif %}">Settings</a>
-  </div>
-
-  <div class="text-center">
-    <a href="{% url 'user-sign-out' %}?next={{ request.path }}"
-      class="btn btn-pink">Logout</a>
-  </div>
+  <nav class="navbar navbar-inverse sidebar" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <img id="profile-image" class="img-circle" src="{{ request.user.profile.avatar.url }}" width="100" height="100">
+        <a class="navbar-brand" href="#">{{ request.user.get_full_name }}</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="{% if request.path == user_overview_url %} active {% endif %}"><a href="{{ user_overview_url }}">Dashboard<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+          <li class="{% if request.path == user_settings_url %} active {% endif %}"><a href="{{ user_settings_url }}">Profile<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+          <li class="{% if request.path == user_categories_url %} active {% endif %}"><a href="{{ user_categories_url }}">Categories<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
+          <li class="{% if request.path == user_records_url %} active {% endif %}"><a href="{{ user_records_url }}">Records<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+            <ul class="dropdown-menu forAnimate" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <!-- <li class="divider"></li> -->
+              <li><a href="{% url 'user-sign-out' %}?next={{ request.path }}" class="btn btn-pink">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 {% endblock %}
