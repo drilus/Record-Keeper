@@ -4,10 +4,12 @@ from .base import *
 DEBUG = False
 ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1', '[::1]']
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Django-storages for using AWS S3 bucket
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'keeperapp/static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'keeperapp/static'),
+# )
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
