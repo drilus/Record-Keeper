@@ -16,14 +16,12 @@ body,html{
 }
 
 .btn-pink {
-  color: white;
   background-color: #EE5462;
 }
 
 .btn-pink:hover,
 .btn-pink:focus {
-  color: white;
-  background-color: #DA4F5D;
+  background-color: #DA4F5D !important;
 }
 
 /* remove outer padding */
@@ -103,12 +101,12 @@ nav.sidebar, .main{
 
   /* adds border top to first nav box */
   nav.sidebar .navbar-nav > li:first-child{
-    border-top: 1px #e5e5e5 solid;
+    border-top: 1px darkgray solid;
   }
 
   /*adds border to bottom nav boxes*/
   nav.sidebar .navbar-nav > li{
-    border-bottom: 1px #e5e5e5 solid;
+    border-bottom: 1px darkgray solid;
   }
 
   /* Colors/style dropdown box*/
@@ -124,7 +122,8 @@ nav.sidebar, .main{
   }
 
   /* allows nav box to use 100% width*/
-  nav.sidebar .navbar-collapse, nav.sidebar .container-fluid{
+  nav.sidebar .navbar-collapse,
+  nav.sidebar .container-fluid{
     padding: 0 0px 0 0px;
   }
 
@@ -134,12 +133,17 @@ nav.sidebar, .main{
     border-color: #383957;
   }
 
+  /* colors dropdown btn text */
+  .navbar-inverse .navbar-nav .open .dropdown-menu>li>a.btn-pink {
+    color: #fff;
+  }
+
   /* colors dropdown box text */
   .navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
     color: darkgrey;
   }
 
-  /* gives sidebar width/height*/
+  /* gives sidebar width/height */
   nav.sidebar{
     width: 200px;
     height: 100%;
@@ -149,12 +153,20 @@ nav.sidebar, .main{
     margin-bottom: 0px;
   }
 
-  /*give sidebar 100% width;*/
+  /* give sidebar btn custom width */
+  nav.sidebar li>a.btn-pink {
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 5px;
+  }
+
+  /* give sidebar 100% width; */
   nav.sidebar li {
     width: 100%;
   }
 
-  /* Move nav to full on mouse over*/
+  /* Move nav to full on mouse over */
   nav.sidebar:hover{
     margin-left: 0px;
   }
