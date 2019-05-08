@@ -101,14 +101,14 @@ nav.sidebar, .main{
   }
 
   /* adds border top to first nav box */
-  /* nav.sidebar .navbar-nav > li:first-child{
+  nav.sidebar .navbar-nav > li:first-child{
     border-top: 1px darkgray solid;
-  } */
+  }
 
   /*adds border to bottom nav boxes*/
-  /* nav.sidebar .navbar-nav > li{
+  nav.sidebar .navbar-nav > li{
     border-bottom: 1px darkgray solid;
-  } */
+  }
 
   /* Colors/style dropdown box*/
   nav.sidebar .navbar-nav .open .dropdown-menu {

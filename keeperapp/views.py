@@ -69,11 +69,13 @@ def user_overview(request):
         total_per_category.append(cost)
 
     # count total records per category
-    record_count = Category.objects.filter(user=request.user).annotate(num_records=Count('record_category'))
+    record_count = Category.objects.filter(user=request.user).annotate(
+        num_records=Count('record_category')
+    ).order_by('-num_records')
 
     # ChartJS uses 'labels' and 'data' arrays to display graph's
     records_per_category = {
-        'labels': [cat.name for cat in Category.objects.filter(user__username=request.user.username)],
+        'labels': [cat.name for cat in record_count],
         'data': [rec.num_records for rec in record_count]
     }
 
