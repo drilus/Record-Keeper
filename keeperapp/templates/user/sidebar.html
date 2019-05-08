@@ -27,12 +27,12 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="{% if request.path == user_overview_url %} active {% endif %}"><a href="{{ user_overview_url }}">Dashboard<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-          <li class="{% if request.path == user_settings_url %} active {% endif %}"><a href="{{ user_settings_url }}">Profile<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+          <li class="{% if request.path == user_overview_url %} active {% endif %}"><a href="{{ user_overview_url }}">Dashboard<span style="font-size:16px;" class="pull-right hidden-xs showopacity fas fa-home"></span></a></li>
+          <li class="{% if request.path == user_settings_url %} active {% endif %}"><a href="{{ user_settings_url }}">Profile<span style="font-size:16px;" class="pull-right hidden-xs showopacity fas fa-user"></span></a></li>
           <li class="{% if request.path == user_categories_url %} active {% endif %}"><a href="{{ user_categories_url }}">Categories<span style="font-size:16px;" class="pull-right hidden-xs showopacity fas fa-tags"></span></a></li>
           <li class="{% if request.path == user_records_url %} active {% endif %}"><a href="{{ user_records_url }}">Records<span style="font-size:16px;" class="pull-right hidden-xs showopacity fas fa-table"></span></a></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preferences <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preferences <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity fas fa-cog"></span></a>
             <ul class="dropdown-menu forAnimate" role="menu">
               <li><a href="#">Themes</a></li>
               <li><a href="#">Settings</a></li>
