@@ -60,11 +60,12 @@ def user_overview(request):
     categories = Category.objects.filter(user=request.user, columns__icontains='cost')
 
     # calculate total for each category with a "cost" field
+    # also round to two decimal places
     total_per_category = []
     for category in categories:
-        cost = sum(float(record.data['Cost']) for record in Record.objects.filter(
+        cost = round(sum(float(record.data['Cost']) for record in Record.objects.filter(
             user=request.user, category__id=category.id
-        ))
+        )), 2)
         # total_per_category.append('${0:,.2f}'.format(cost))
         total_per_category.append(cost)
 
