@@ -17,7 +17,7 @@ def home(request):
 
 @login_required(login_url='/user/sign-in')
 def user_home(request):
-    return render(request, 'user/overview.html', {})
+    return redirect(user_overview)
 
 
 def user_sign_up(request):
