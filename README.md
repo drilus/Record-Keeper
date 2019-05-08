@@ -26,7 +26,7 @@ Name, Author, Rating, and Thoughts will never change. They are "**static**".
 This application has "**dynamic**" headers / columns. The user is able to define the type of data to be tracked. This is done by the user entering a comma separated list of columns. The data for the columns is stored in JSON on the backend. The user doesn't need to know JSON. They simply enter their information on a dynamic form that builds JSON in javascript.
 
 Example:  
-The user creates a category and names it Restaurants. For each record they want to record:
+The user creates a category and names it Restaurants and lists names for each column:
 
 * Name
 * Cost
