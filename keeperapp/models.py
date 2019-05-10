@@ -5,7 +5,6 @@ from jsonfield import JSONField
 
 
 class Profile(models.Model):
-    # Be sure to use your own default image and path or the default profile image will be broken
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     phone = models.CharField(max_length=500)
     address = models.CharField(max_length=500)
@@ -58,10 +57,17 @@ class CategoryInfo(models.Model):
         default='unknown'
     )
     description = models.TextField(max_length=2000)
-    image = models.ImageField(upload_to='images/', blank=True)
-    file = models.FileField(upload_to='files/', blank=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+    file = models.FileField(upload_to='files/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def image_url(self):
+        if self.image:
+            return self.image.url
+        else:
+            return "/static/img/699086-icon-94-folder-512.png"
 
     def __str__(self):
         return str(self.id)

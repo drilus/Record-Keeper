@@ -5,3 +5,5 @@ db.sqlite3
 media/
 .vscode/
 pg_backup/
+.coverage
+htmlcov/

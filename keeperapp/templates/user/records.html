@@ -18,7 +18,7 @@
         <tbody>
           {% for info in information %}
           <tr>
-            <td scope="row"><a href="{% url 'user-records' info.id %}">{{ info.category.name }}</a></td>
+            <td scope="row"><a href="{% url 'records-info' info.id %}">{{ info.category.name }}</a></td>
             <td>{{ info.description }}</td>
           </tr>
           {% endfor %}
