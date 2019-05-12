@@ -1,8 +1,14 @@
-from django.test import Client, TestCase
+from django.test import Client, TestCase, LiveServerTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 
 from keeperapp.models import Profile, Category, CategoryInfo, Record, Option
+from keeperapp.forms import UserCreationForm, ProfileForm, CategoryForm, CategoryInfoForm
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 import json
 
 
@@ -50,7 +56,7 @@ class KeeperApp(TestCase):
         )
 
 
-class ViewTemplates(KeeperApp):
+class ViewTemplatesGet(KeeperApp):
     def setUp(self):
         self.client = Client()
         self.client.login(username=self.user.username, password='testing')
@@ -119,10 +125,46 @@ class ViewTemplates(KeeperApp):
         self.assertTemplateUsed(response, 'user/edit_record.html')
 
 
-class FormTests(KeeperApp):
-    def setUp(self):
-        self.client = Client()
-        self.client.login(username=self.user.username, password='testing')
+class FormsTest(KeeperApp):
+    def test_user_sign_up(self):
+        user_data = {
+            'username': 'dzoolander',
+            'first_name': 'Derek',
+            'last_name': 'Zoolander',
+            'email': 'dzoolander@derelict.com',
+            'password1': '*fuaqGiz3X7c&ftU&823',
+            'password2': '*fuaqGiz3X7c&ftU&823'
+        }
+        profile_data = {
+            'phone': '555-1212',
+            'address': 'Hollywood',
+            'city': 'Las Angelas',
+            'state': 'California',
+            'zip': '55555'
+        }
+        user_form = UserCreationForm(data=user_data)
+        profile_form = ProfileForm(data=profile_data)
+        self.assertTrue(user_form.is_valid())
+        self.assertTrue(profile_form.is_valid())
+        # sys.stderr.write(repr(object_to_print) + '\n')
+
+    def test_category_form(self):
+        category = {
+            'name': 'Test Name',
+            'columns': 'Price, Total, Date',
+            'options': '{"null": "null"}'
+        }
+        category_form = CategoryForm(data=category)
+        self.assertTrue(category_form.is_valid())
+
+    def test_category_info_form(self):
+        cat_info = {
+            'description': 'Test description',
+            'image': None,
+            'file': None
+        }
+        info_form = CategoryInfoForm(data=cat_info)
+        self.assertTrue(info_form.is_valid())
 
 
 class ModelTest(KeeperApp):
@@ -179,3 +221,50 @@ class ViewTestNoTestData(TestCase):
         response = self.client.get(reverse('records-info', kwargs={'category_id': 1}), follow=True)
         self.assertRedirects(response, reverse('add-record'), status_code=302, target_status_code=200,
                              msg_prefix='', fetch_redirect_response=True)
+
+
+class ViewTesting(LiveServerTestCase):
+    def setUp(self):
+        self.selenium = webdriver.PhantomJS()
+        super(ViewTesting, self).setUp()
+
+    def tearDown(self):
+        self.selenium.quit()
+        super(ViewTesting, self).tearDown()
+
+    def test_account_signup(self):
+        selenium = self.selenium
+        selenium.get('http://127.0.0.1:8000/user/sign-up')
+        username = selenium.find_element_by_id('id_username')
+        first_name = selenium.find_element_by_id('id_first_name')
+        last_name = selenium.find_element_by_id('id_last_name')
+        email = selenium.find_element_by_id('id_email')
+        password1 = selenium.find_element_by_id('id_password1')
+        password2 = selenium.find_element_by_id('id_password2')
+        phone = selenium.find_element_by_id('id_phone')
+        address = selenium.find_element_by_id('id_address')
+        city = selenium.find_element_by_id('id_city')
+        state = selenium.find_element_by_id('id_state')
+        zipcode = selenium.find_element_by_id('id_zip')
+
+        submit = selenium.find_element_by_name('register')
+
+        username.send_keys('derelict')
+        first_name.send_keys('Derek')
+        last_name.send_keys('Zoolander')
+        email.send_keys('dzoolander@derelict.com')
+        password1.send_keys('6jX*5XCd*E4c*aa9xhXV')
+        password2.send_keys('6jX*5XCd*E4c*aa9xhXV')
+        phone.send_keys('555-1212')
+        address.send_keys('512 Fashion Model Park')
+        city.send_keys('Las Angelas')
+        state.send_keys('California')
+        zipcode.send_keys('16823')
+
+        submit.click()
+        # selenium.save_screenshot('screenshot.png')
+
+        wait = WebDriverWait(selenium, 10)
+        wait.until(EC.url_changes('http://127.0.0.1:8000/user/sign-up'))
+        url = selenium.current_url
+        self.assertEqual(url, 'http://127.0.0.1:8000/user/overview')
