@@ -31,6 +31,10 @@
             {% endfor %}
         </tbody>
       </table>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-pink pull-right">Export to CSV</button>
+      </form>
     </div>
   </div>
 {% endblock %}

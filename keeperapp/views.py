@@ -3,12 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.db.models import Count
+from django.http import HttpResponse
 
 from keeperapp.forms import ProfileForm, UserFormForEdit, CategoryForm, CategoryInfoForm, \
     RecordForm, UserCreationForm, RecordColumnForm, AddRecordForm
 from keeperapp.models import CategoryInfo, Record, Category
 from keeperapp.serializers import CategorySerializer
 import datetime
+import csv
 
 
 def home(request):
@@ -237,6 +239,18 @@ def user_category_records(request, category_id):
 
     # Get columns to use as table headers
     columns = list(map(lambda x: x.strip(), Category.objects.get(id=category_id).columns.split(',')))
+
+    # TODO: Move this request to Options view
+    # Export our record data into CSV format
+    if request.method == 'POST':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="export.csv"'
+
+        writer = csv.DictWriter(response, fieldnames=columns)
+        writer.writeheader()
+        for record in records:
+            writer.writerow(record.data)
+        return response
 
     return render(request, 'user/record_info.html', {
         'records': records,
