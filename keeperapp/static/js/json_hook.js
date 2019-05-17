@@ -11,7 +11,16 @@ function hideElements() {
     // Hide all temporary fields on load
     hideElements()
     $('.datetime-input').datetimepicker({
-      format:'YYYY-MM-DD HH:mm:ss'
+      format:'YYYY-MM-DD HH:mm:ss',
+      icons: {
+        time: "far fa-clock",
+        date: "far fa-calendar-alt",
+        up: "fa fa-arrow-up",
+        down: "fa fa-arrow-down",
+        previous: "fas fa-caret-left",
+        next: "fas fa-caret-right",
+        today: "fas fa-crosshairs"
+      }
     });
     $("#id_category").change(function() {
         // Set all temp fields to hidden when choosing a new category

@@ -21,7 +21,16 @@
 <script>
   $(function () {
       $('.datetime-input').datetimepicker({
-        format:'YYYY-MM-DD HH:mm:ss'
+        format:'YYYY-MM-DD HH:mm:ss',
+        icons: {
+          time: "far fa-clock",
+          date: "far fa-calendar-alt",
+          up: "fa fa-arrow-up",
+          down: "fa fa-arrow-down",
+          previous: "fas fa-caret-left",
+          next: "fas fa-caret-right",
+          today: "fas fa-crosshairs"
+        }
       });
   });
 </script>
