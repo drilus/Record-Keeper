@@ -246,9 +246,11 @@ def user_category_records(request, category_id):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="export.csv"'
 
+        columns.append('Date')
         writer = csv.DictWriter(response, fieldnames=columns)
         writer.writeheader()
         for record in records:
+            record.data['Date'] = str(record.date)
             writer.writerow(record.data)
         return response
 

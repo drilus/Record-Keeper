@@ -10,6 +10,8 @@ function hideElements() {
 (function() {
     // Hide all temporary fields on load
     hideElements()
+
+    // Enable our DateTimePicker
     $('.datetime-input').datetimepicker({
       format:'YYYY-MM-DD HH:mm:ss',
       icons: {
@@ -22,6 +24,7 @@ function hideElements() {
         today: "fas fa-crosshairs"
       }
     });
+    
     $("#id_category").change(function() {
         // Set all temp fields to hidden when choosing a new category
         hideElements()
