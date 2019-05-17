@@ -50,8 +50,8 @@ function hideElements() {
     $("#id_form").submit(function( event ) {
       var columnJSON = {};
       $('*[id*=id_column_]:visible').each(function() {
-        columnJSON[$('label[for=' + this.id).text()] = this.value
-        document.getElementById("id_data").value = JSON.stringify(columnJSON, null, 4);
+        columnJSON[$('label[for="' + this.id + '"').text()] = this.value;
       });
+      document.getElementById("id_data").value = JSON.stringify(columnJSON, null, 4);
     });
 }).call(this);
