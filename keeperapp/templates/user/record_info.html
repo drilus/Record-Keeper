@@ -16,6 +16,7 @@
             {% for column in columns %}
               <th>{{ column }}</th>
             {% endfor %}
+            <th>Date</th>
             <th>File</th>
           </tr>
         </thead>
@@ -26,6 +27,7 @@
                 {% for key, value in record.data.items %}
                   <td scope="row">{{ value }}</td>
                 {% endfor %}
+                <td>{{ record.date }}</td>
                 <td><a href="{{ MEDIA_URL }}{{ record.file }}">{{ record.file.name | getfilename }}</a></td>
               </tr>
             {% endfor %}

@@ -75,11 +75,15 @@ class AddRecordForm(forms.ModelForm):
 
     class Meta:
         model = Record
-        widgets = {'data': forms.HiddenInput()}
+        widgets = {
+            'data': forms.HiddenInput(),
+            'date': forms.DateTimeInput(attrs={'class': 'datetime-input'})
+        }
         fields = (
             'category',
             'data',
-            'file'
+            'file',
+            'date'
         )
 
     # Only pull category objects that are created by the user
@@ -97,8 +101,12 @@ class RecordForm(forms.ModelForm):
         fields = (
             'category',
             'data',
+            'date',
             'file'
         )
+        widgets = {
+            'date': forms.DateTimeInput(attrs={'class': 'datetime-input'})
+        }
 
     # Only pull category objects that are created by the user
     # Default uses Category.objects.all()

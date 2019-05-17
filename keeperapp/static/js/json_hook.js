@@ -10,6 +10,9 @@ function hideElements() {
 (function() {
     // Hide all temporary fields on load
     hideElements()
+    $('.datetime-input').datetimepicker({
+      format:'YYYY-MM-DD HH:mm:ss'
+    });
     $("#id_category").change(function() {
         // Set all temp fields to hidden when choosing a new category
         hideElements()

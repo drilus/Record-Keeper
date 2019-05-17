@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from jsonfield import JSONField
 
@@ -54,7 +55,7 @@ class CategoryInfo(models.Model):
         Category,
         on_delete=models.CASCADE,
         related_name='category_data',
-        default='unknown'
+        default=1
     )
     description = models.TextField(max_length=2000)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
@@ -97,6 +98,7 @@ class Record(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     data = JSONField(max_length=2000)
+    date = models.DateTimeField(blank=True, null=True, default=timezone.now)
     file = models.FileField(upload_to='files/', blank=True)
 
     def __str__(self):
