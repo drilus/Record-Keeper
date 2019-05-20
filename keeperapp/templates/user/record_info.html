@@ -9,7 +9,7 @@
     <div class="panel-body">
       <br/>
 
-      <table class="table table-bordered table-hover table-striped">
+      <table id="record_info" class="table table-bordered table-hover table-striped">
         <thead>
           <tr class="bg-gray text-white">
             <th>id</th>
@@ -32,11 +32,27 @@
               </tr>
             {% endfor %}
         </tbody>
+        <!-- <tfoot>
+          <tr>
+            <th>id</th>
+            {% for column in columns %}
+              <th>{{ column }}</th>
+            {% endfor %}
+            <th>Date</th>
+            <th>File</th>
+          </tr>
+        </tfoot> -->
       </table>
+      <br/>
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <button type="submit" class="btn btn-pink pull-right">Export to CSV</button>
       </form>
     </div>
   </div>
+  <script>
+    $(document).ready(function() {
+      $('#record_info').DataTable();
+    } );
+  </script>
 {% endblock %}
