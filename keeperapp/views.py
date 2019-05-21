@@ -126,7 +126,7 @@ def user_categories(request):
 
 @login_required(login_url='/user/sign-in')
 def edit_category(request, category_id):
-    category_info = CategoryInfo.objects.get(id=category_id)
+    category_info = CategoryInfo.objects.get(category__id=category_id)
     category_form = CategoryForm(instance=category_info.category)
     category_info_form = CategoryInfoForm(instance=category_info)
 
